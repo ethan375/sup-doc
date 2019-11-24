@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if tickets %}
+        {% for ticket in tickets %}
+            <div class="ticket">
+                <h4 class="ticket__title">{{ ticket.title }}</h4>
+                <p class="ticket__submitter">{{ ticket.submitters_name }}</p>
+                <p class="ticket__time">{{ ticket.time_created }}</p>
+                <p class="ticket__status">{{ ticket.status }}</p>
+                <p class="ticket__assigned_dev">{{ ticket.assigned_dev }}</p>
+                <p class="ticket__completed_dev">{{ ticket.completed_dev }}</p>
+                <p class="ticket__description">{{ ticket.description }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+            <p>No tickets to display! Great job team! <a href="ticket/new/">Create a new ticket</a></p>
+    {% endfor %}
+{% endblock %}
