@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Bug(models.Model):
@@ -8,8 +9,12 @@ class Bug(models.Model):
     description = models.CharField(max_length=500)
     submitters_name = models.CharField(max_length=100)
     status = models.CharField(max_length=50)
-    assigned_dev = models.CharField(max_length=100)
+    assigned_dev = models.ForeignKey(BugUser, on_delete=models.CASCADE)
     completed_dev = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title
+
+
+class BugUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
