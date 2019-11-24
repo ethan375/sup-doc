@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
-class Bug(models.Model):
+class Ticket(models.Model):
     title = models.CharField(max_length=100)
     time_created = models.DateTimeField(timezone.now())
     description = models.CharField(max_length=500)
@@ -18,3 +18,4 @@ class Bug(models.Model):
 
 class BugUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    tickets = models.ForeignKey(Ticket, on_delete=models.CASCADE)
