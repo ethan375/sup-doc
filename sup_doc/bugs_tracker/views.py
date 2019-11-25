@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from . models import BugUser, Ticket
 from . templates.forms.form import NewUserForm, NewTicketForm
+from django.utils import timezone
 
 
 def index(request):
@@ -20,16 +21,20 @@ def new_ticket(request):
         
         Ticket.objects.create(
             title = form_data['title'],
-            description = form_data['desciption'],
-            # submitters_name = form_data[''],
+            time_created = timezone.now(),
+            description = form_data['description'],
+            submitters_name = request.user.name,
             status = 'New',
-            assigned_dev = None,
-            completed_dev = None
+            assigned_dev = 'None',
+            completed_dev = 'None'
         )
 
         return render(request, 'dev.html')
     else:
-        return render(request, 'dev.html')
+        form = NewTicketForm()
+        context = {'form': form}
+
+        return render(request, 'ticket/new_ticket.html', context)
 
 
 def edit_ticket(request, ticket_id):

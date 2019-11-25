@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+    {% block content %}
+        {% if form %}
+
+            <div class=ticket_form>
+                <h4>New ticket details</h4>
+                <form action="/bugs-tracker/ticket/new" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Create ticket">
+                </form>
+            </div>
+
+        {% endif %}
+    {% endblock %}

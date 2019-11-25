@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class Ticket(models.Model):
     title = models.CharField(max_length=100)
-    time_created = models.DateTimeField(timezone.now())
+    time_created = models.DateTimeField()
     description = models.CharField(max_length=500)
     submitters_name = models.CharField(max_length=100)
     status = models.CharField(max_length=50)
