@@ -19,3 +19,5 @@ class Ticket(models.Model):
 class BugUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     tickets = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
