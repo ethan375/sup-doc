@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from . models import BugUser, Ticket
-from . templates.forms.form import NewUserForm, NewTicketForm
+from django.contrib.auth.models import User
+from . forms import NewUserForm, NewTicketForm
 from django.utils import timezone
 
 
@@ -62,5 +63,21 @@ def login_user(request):
 
 
 def new_user(request):
-    # going to register new users and shit 
-    pass
+    if request.method == 'POST':
+        form = NewUserForm(request.POST)
+
+        if form.is_valid():
+            form_data = form.cleaned_data
+            user = form.save()
+
+            BugUser.objects.create(
+                name = form_data['username'],
+                user = user
+            )
+            
+            return render(request, 'dev.html')
+    else:
+        form = NewUserForm()
+        context = {'form': form}
+
+        return render(request, 'auth/new_user.html', context)

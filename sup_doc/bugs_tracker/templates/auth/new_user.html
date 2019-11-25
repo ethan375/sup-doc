@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+    {% block content %}
+
+        {% if form %}
+
+            <div class="new_user">
+                <h4>Create a new user</h4>
+                <form action="/bugs-tracker/user/new" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Create user">
+                </form>
+            </div>
+
+        {% endif %}
+
+    {% endblock %}
