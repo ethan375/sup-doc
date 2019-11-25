@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from . models import BugUser, Ticket
+from . templates.forms.form import NewUserForm, NewTicketForm
 
 
 def index(request):
@@ -12,9 +13,23 @@ def index(request):
 def new_ticket(request):
     # need to import the form and instantiate and all that good stuff
     if request.method == 'POST':
-        pass
+        form = NewTicketForm(request.POST)
+
+        if form.is_valid():
+            form_data = form.cleaned_data
+        
+        Ticket.objects.create(
+            title = form_data['title'],
+            description = form_data['desciption'],
+            # submitters_name = form_data[''],
+            status = 'New',
+            assigned_dev = None,
+            completed_dev = None
+        )
+
+        return render(request, 'dev.html')
     else:
-        pass
+        return render(request, 'dev.html')
 
 
 def edit_ticket(request, ticket_id):
