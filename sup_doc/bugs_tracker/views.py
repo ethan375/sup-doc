@@ -49,8 +49,8 @@ def edit_ticket(request, ticket_id):
 
 
 def ticket_detail(request, ticket_id):
-    ticket = Ticket.objects.filter(id=ticket_id)
-    context = {'ticket', ticket}
+    ticket = Ticket.objects.filter(id=ticket_id).first()
+    context = {'ticket': ticket}
 
     return render(request, 'ticket/ticket_detail.html', context)
 

@@ -4,7 +4,7 @@
     {% if tickets %}
         {% for ticket in tickets %}
             <div class="ticket" style="border: 1px solid black; margin: 10px;">
-                <h4 class="ticket__title">Title: {{ ticket.title }}</h4>
+                <a href="/bugs-tracker/ticket/{{ticket.id}}"><h4 class="ticket__title">Title: {{ ticket.title }}</h4></a>
                 <p class="ticket__description">Description: {{ ticket.description }}</p>
                 <p class="ticket__submitter">Submitter: {{ ticket.submitters_name }}</p>
                 <p class="ticket__time">Created: {{ ticket.time_created }}</p>
