@@ -3,6 +3,7 @@ from . import views
 
 
 urlpatterns = [
+    path('', views.landing, name="landing_page"),
     path('ticket/all', views.index, name="index"),
     path('ticket/new', views.new_ticket, name="new_ticket"),
     path('ticket/edit/<int:ticket_id>', views.edit_ticket, name="edit_ticket"),

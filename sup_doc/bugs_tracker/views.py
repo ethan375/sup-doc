@@ -6,6 +6,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
 
+def landing(request):
+    return render(request, 'landing.html')
+
+
 def index(request):
     tickets = Ticket.objects.all()
     context = {'tickets': tickets}
@@ -22,13 +26,13 @@ def new_ticket(request):
             form_data = form.cleaned_data
         
         Ticket.objects.create(
-            title = form_data['title'],
-            time_created = timezone.now(),
-            description = form_data['description'],
-            submitters_name = request.user.name,
-            status = 'New',
-            assigned_dev = 'None',
-            completed_dev = 'None'
+            title=form_data['title'],
+            time_created=timezone.now(),
+            description=form_data['description'],
+            submitters_name=request.user.buguser,
+            status='New',
+            assigned_dev=None,
+            completed_dev=None
         )
 
         return render(request, 'dev.html')

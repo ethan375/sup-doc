@@ -6,10 +6,10 @@ class Ticket(models.Model):
     title = models.CharField(max_length=100)
     time_created = models.DateTimeField()
     description = models.CharField(max_length=500)
-    submitters_name = models.CharField(max_length=100)
+    submitters_name = models.ForeignKey('BugUser', on_delete=models.CASCADE, related_name="ticket_submitters_name")
     status = models.CharField(max_length=50)
-    assigned_dev = models.ForeignKey('BugUser', on_delete=models.CASCADE)
-    completed_dev = models.CharField(max_length=100)
+    assigned_dev = models.ForeignKey('BugUser', on_delete=models.CASCADE, null=True, blank=True)
+    completed_dev = models.ForeignKey('BugUser', on_delete=models.CASCADE, null=True, blank=True, related_name="ticket_completed_dev")
 
     def __str__(self):
         return self.title
