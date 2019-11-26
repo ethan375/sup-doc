@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <form action="/bugs-tracker/user/login" method="POST">
+        {% if error %}
+            <p style="background-color: red;">{{ error }}}</p>
+        {% endif %}
+        <h4>Login</h4>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="login">
+    </form>
+
+{% endblock %}

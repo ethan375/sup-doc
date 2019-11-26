@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from . models import BugUser, Ticket
-from django.contrib.auth.models import User
-from . forms import NewUserForm, NewTicketForm
+from . forms import NewUserForm, NewTicketForm, LoginForm
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
 
 def index(request):
@@ -58,8 +59,32 @@ def tickets_by_user(request, user_id):
 
 
 def login_user(request):
-    # going to handle the fun of loggin in and all that shit 
-    pass
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            form_data = form.cleaned_data
+
+            user = authenticate(
+                username = form_data['username'],
+                password = form_data['password']
+            )
+
+            if user is not None:
+                login(request, user)
+                return render(request, 'index.html')
+            else:
+                form = LoginForm()
+                context = {
+                    'error': "incorrect username or password ", 
+                    'form': form
+                }
+                return render(request, 'auth/login.html', context)
+    else:
+        form = LoginForm()
+        context = {'form': form}
+
+        return render(request, 'auth/login.html', context)
 
 
 def new_user(request):
@@ -68,7 +93,12 @@ def new_user(request):
 
         if form.is_valid():
             form_data = form.cleaned_data
-            user = form.save()
+            # user = form.save()
+
+            user = User.objects.create_user(
+                username=form_data['username'],
+                password=form_data['password']
+            )
 
             BugUser.objects.create(
                 name = form_data['username'],
