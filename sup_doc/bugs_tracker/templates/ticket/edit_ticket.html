@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+            <h4>Edit ticket</h4>
+            <form action="/bugs-tracker/ticket/edit/{{form.instance.id}}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Submit edits">
+            </form>
+{% endblock %}

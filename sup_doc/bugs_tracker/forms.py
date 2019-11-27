@@ -23,6 +23,19 @@ class NewUserForm(forms.ModelForm):
         ]
 
 
+class EditTicketForm(forms.ModelForm):
+    Mark_complete = forms.CharField(widget=forms.CheckboxInput)
+    Invalidate_ticket = forms.CharField(widget=forms.CheckboxInput)
+
+    class Meta:
+        model = Ticket
+        fields = [
+            'title',
+            'description',
+            'assigned_dev'
+        ]
+
+
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100)
     password = forms.CharField(widget=forms.PasswordInput)

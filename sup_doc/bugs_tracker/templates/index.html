@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <a href="/bugs-tracker/ticket/new">Create a new ticket</a>
     {% if tickets %}
         {% for ticket in tickets %}
             <div class="ticket" style="border: 1px solid black; margin: 10px;">

@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from . models import BugUser, Ticket
-from . forms import NewUserForm, NewTicketForm, LoginForm
+from . forms import NewUserForm, NewTicketForm, LoginForm, EditTicketForm
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -35,7 +35,7 @@ def new_ticket(request):
             completed_dev=None
         )
 
-        return render(request, 'dev.html')
+        return redirect('/bugs-tracker/ticket/all')
     else:
         form = NewTicketForm()
         context = {'form': form}
@@ -44,8 +44,37 @@ def new_ticket(request):
 
 
 def edit_ticket(request, ticket_id):
-    # going to need to handle the form and the put/patch request, whatever it is going to be
-    pass
+    ticket = Ticket.objects.filter(id=ticket_id).first()
+    if request.method == 'POST':
+        form = EditTicketForm(request.POST)
+
+        if form.is_valid():
+            form = form.cleaned_data
+
+            if form['Invalidate_ticket'] == 'True':
+                ticket.status = 'Invalid'
+                ticket.completed_dev = ticket.assigned_dev
+                ticket.assigned_dev = None
+                ticket.save()
+
+            elif ticket.assigned_dev == None and form['assigned_dev'] != None:
+                ticket.status = 'In Progress'
+                ticket.assigned_dev = request.user.buguser
+                ticket.save()
+
+            elif ticket.completed_dev == None and form['completed_dev'] != None:
+                ticket.status = 'Done'
+                ticket.assigned_dev = None
+                ticket.completed_dev = form['completed_dev']
+                ticket.save()
+
+        return redirect('/bugs-tracker/ticket/{}'.format(ticket.id))
+     
+    else:
+        form = EditTicketForm(instance=ticket)
+        context = {'form': form}
+
+        return render(request, 'ticket/edit_ticket.html', context)
 
 
 def ticket_detail(request, ticket_id):
