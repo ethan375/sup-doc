@@ -11,7 +11,7 @@ def landing(request):
 
 
 def index(request):
-    tickets = Ticket.objects.order_by('status')
+    tickets = Ticket.objects.all()
     context = {'tickets': tickets}
 
     return render(request, 'index.html', context)
@@ -25,19 +25,15 @@ def new_ticket(request):
         if form.is_valid():
             form_data = form.cleaned_data
         
-        ticket = Ticket.objects.create(
+        Ticket.objects.create(
             title=form_data['title'],
             time_created=timezone.now(),
             description=form_data['description'],
             submitters_name=request.user.buguser,
-            status=1,
+            status='New',
             assigned_dev=None,
             completed_dev=None
         )
-        
-        user = request.user.buguser
-        user.tickets.add(ticket)
-        user.save()
 
         return redirect('/bugs-tracker/ticket/all')
     else:
@@ -56,18 +52,18 @@ def edit_ticket(request, ticket_id):
             form = form.cleaned_data
 
             if form['Invalidate_ticket'] == 'True':
-                ticket.status = 4
+                ticket.status = 'Invalid'
                 ticket.completed_dev = ticket.assigned_dev
                 ticket.assigned_dev = None
                 ticket.save()
 
             elif ticket.assigned_dev == None and form['assigned_dev'] != None:
-                ticket.status = 2
+                ticket.status = 'In Progress'
                 ticket.assigned_dev = request.user.buguser
                 ticket.save()
 
             elif ticket.completed_dev == None and form['completed_dev'] != None:
-                ticket.status = 3
+                ticket.status = 'Done'
                 ticket.assigned_dev = None
                 ticket.completed_dev = form['completed_dev']
                 ticket.save()
@@ -89,18 +85,10 @@ def ticket_detail(request, ticket_id):
 
 
 def tickets_by_user(request, user_id):
-    user = BugUser.objects.filter(id=user_id).first()
-    tickets = user.tickets.all()
-    context = {'tickets': tickets}
+    user = BugUser.objects.filter(id=user_id)
+    context = {'user': user}
 
-    return render(request, 'ticket/tickets_by_user.html', context)
-
-
-def all_users(request):
-    users = BugUser.objects.all()
-    context = {'users': users}
-
-    return render(request, 'all_users.html', context)
+    return render(request, 'ticket/ticket_by_user.html', context)
 
 
 def login_user(request):
@@ -146,11 +134,11 @@ def new_user(request):
             )
 
             BugUser.objects.create(
-                name=form_data['username'],
-                user=user
+                name = form_data['username'],
+                user = user
             )
             
-            return redirect('/bugs-tracker/ticket/all')
+            return render(request, 'dev.html')
     else:
         form = NewUserForm()
         context = {'form': form}
