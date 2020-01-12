@@ -24,15 +24,15 @@ class NewUserForm(forms.ModelForm):
 
 
 class EditTicketForm(forms.ModelForm):
-    Mark_complete = forms.CharField(widget=forms.CheckboxInput)
-    Invalidate_ticket = forms.CharField(widget=forms.CheckboxInput)
+    Mark_complete = forms.CharField(widget=forms.CheckboxInput, required=False)
+    Invalidate_ticket = forms.CharField(widget=forms.CheckboxInput, required=False)
 
     class Meta:
         model = Ticket
         fields = [
             'title',
             'description',
-            'assigned_dev'
+            'assigned_dev',
         ]
 
 

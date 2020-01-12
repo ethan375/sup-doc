@@ -10,5 +10,6 @@ urlpatterns = [
     path('ticket/<int:ticket_id>', views.ticket_detail, name="ticket_detail"),
     path('user/<int:user_id>', views.tickets_by_user, name="tickets_by_user"),
     path('user/login', views.login_user, name="user_login"),
-    path('user/new', views.new_user, name="new_user")
+    path('user/new', views.new_user, name="new_user"),
+    path('user/all', views.all_users)
 ]

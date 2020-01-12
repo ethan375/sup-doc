@@ -1,0 +1,13 @@
+{% block content %}
+
+    <a href="/bugs-tracker/ticket/all">Back to tickets</a>
+    <h4>Click on a user to see all the tickets the user has filed and completed</h4>
+    {% for user in users %}
+
+        <div class="user" style="margin: 50px;">
+            <a href="/bugs-tracker/user/{{user.id}}">{{user.name}}</a>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

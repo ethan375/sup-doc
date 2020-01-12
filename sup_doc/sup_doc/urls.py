@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from bugs_tracker.urls import urlpatterns as bug_urls
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('bugs-tracker/', include('bugs_tracker.urls'))
 ]
+
+urlpatterns += bug_urls
